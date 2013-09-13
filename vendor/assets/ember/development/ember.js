@@ -1,5 +1,5 @@
 // Fetched from: http://builds.emberjs.com/ember-latest.js
-// Fetched on: 2013-09-13T12:21:25Z
+// Fetched on: 2013-09-13T19:09:47Z
 // ==========================================================================
 // Project:   Ember - JavaScript Application Framework
 // Copyright: ©2011-2013 Tilde Inc. and contributors
@@ -10,8 +10,8 @@
 // ==========================================================================
 
 
-// Version: v1.0.0-98-gb72e945
-// Last commit: b72e945 (2013-09-11 12:09:59 -0700)
+// Version: v1.0.0-103-gac13467
+// Last commit: ac13467 (2013-09-13 11:47:08 -0700)
 
 
 (function() {
@@ -192,8 +192,8 @@ if (!Ember.testing) {
 // ==========================================================================
 
 
-// Version: v1.0.0-98-gb72e945
-// Last commit: b72e945 (2013-09-11 12:09:59 -0700)
+// Version: v1.0.0-103-gac13467
+// Last commit: ac13467 (2013-09-13 11:47:08 -0700)
 
 
 (function() {
@@ -19247,6 +19247,7 @@ var get = Ember.get, set = Ember.set;
 var guidFor = Ember.guidFor;
 var a_forEach = Ember.EnumerableUtils.forEach;
 var a_addObject = Ember.EnumerableUtils.addObject;
+var meta = Ember.meta;
 
 var childViewsProperty = Ember.computed(function() {
   var childViews = this._childViews, ret = Ember.A(), view = this;
@@ -20995,12 +20996,6 @@ Ember.View = Ember.CoreView.extend(
     return viewCollection;
   },
 
-  _elementWillChange: Ember.beforeObserver(function() {
-    this.forEachChildView(function(view) {
-      Ember.propertyWillChange(view, 'element');
-    });
-  }, 'element'),
-
   /**
     @private
 
@@ -21012,7 +21007,7 @@ Ember.View = Ember.CoreView.extend(
   */
   _elementDidChange: Ember.observer(function() {
     this.forEachChildView(function(view) {
-      Ember.propertyDidChange(view, 'element');
+      delete meta(view).cache.element;
     });
   }, 'element'),
 
@@ -21460,6 +21455,7 @@ Ember.View = Ember.CoreView.extend(
 
     if (priorState && priorState.exit) { priorState.exit(this); }
     if (currentState.enter) { currentState.enter(this); }
+    if (state === 'inDOM') { delete Ember.meta(this).cache.element; }
 
     if (children !== false) {
       this.forEachChildView(function(view) {
@@ -21807,10 +21803,18 @@ Ember.merge(preRender, {
     var viewCollection = view.viewHierarchyCollection();
 
     viewCollection.trigger('willInsertElement');
-    // after createElement, the view will be in the hasElement state.
+
     fn.call(view);
-    viewCollection.transitionTo('inDOM', false);
-    viewCollection.trigger('didInsertElement');
+
+    // We transition to `inDOM` if the element exists in the DOM
+    var element = view.get('element');
+    while (element = element.parentNode) {
+      if (element === document) {
+        viewCollection.transitionTo('inDOM', false);
+        viewCollection.trigger('didInsertElement');
+      }
+    }
+
   },
 
   renderToBufferIfNeeded: function(view, buffer) {
@@ -28209,6 +28213,7 @@ function normalizeHash(hash, hashTypes) {
 * `tabindex`
 * `indeterminate`
 * `name`
+
 
   When set to a quoted string, these values will be directly applied to the HTML
   element. When left unquoted, these values will be bound to a property on the
