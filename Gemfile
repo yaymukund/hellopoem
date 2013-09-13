@@ -20,6 +20,7 @@ group :development do
   gem 'pry-rails'
   gem 'guard'
   gem 'guard-rspec'
+  gem 'annotate'
 end
 
 group :test, :development do
