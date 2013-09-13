@@ -11,7 +11,7 @@
 class Line < ActiveRecord::Base
   belongs_to :stanza, inverse_of: :lines
   has_one :poem, through: :stanza
-  has_one :author, through: :poem
+  has_one :user, through: :poem
   validates :text, presence: true
   default_scope { order('rank ASC') }
 end

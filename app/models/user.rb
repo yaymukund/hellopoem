@@ -10,7 +10,7 @@
 class User < ActiveRecord::Base
   has_secure_password
 
-  has_many :poems, inverse_of: :author
+  has_many :poems, inverse_of: :user
   has_many :stanzas, through: :poems
   has_many :lines, through: :stanzas
 

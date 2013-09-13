@@ -1,4 +1,6 @@
 # encoding: utf-8
+puts 'Seeding database with a single poem.'
+
 user = User.create!(
   login: 'yaymukund',
   password: 'test12',
@@ -6,7 +8,7 @@ user = User.create!(
 )
 
 poem = Poem.create!(
-  author: user,
+  user: user,
   title: 'The Coming of War: Actæon'
 )
 

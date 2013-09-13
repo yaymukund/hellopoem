@@ -8,12 +8,14 @@
 #
 
 class Poem < ActiveRecord::Base
-  belongs_to :author, inverse_of: :poems,
-                      class_name: 'User',
-                      foreign_key: 'user_id'
-
+  belongs_to :user, inverse_of: :poems
   has_many :stanzas, inverse_of: :poem
   has_many :lines, -> { order 'stanzas.rank ASC, lines.rank ASC' }, through: :stanzas
 
   validates :title, presence: true
+
+  # This query might need to be optimized eventually, which is why it's a scope.
+  def self.random_order
+    order('RANDOM()')
+  end
 end
