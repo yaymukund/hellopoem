@@ -7,4 +7,9 @@
 #  order   :integer
 #
 class Stanza < ActiveRecord::Base
+  belongs_to :poem, inverse_of: :stanza
+  has_one :author, through: :poem
+  has_many :lines, inverse_of: :stanza
+
+  default_scope order('ORDER ASC')
 end
