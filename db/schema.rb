@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 20130913020249) do
 
   create_table "lines", force: true do |t|
     t.text    "text",      null: false
-    t.integer "order",     null: false
+    t.integer "rank"
     t.integer "stanza_id"
   end
 
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20130913020249) do
 
   create_table "stanzas", force: true do |t|
     t.integer "poem_id"
-    t.integer "order"
+    t.integer "rank"
   end
 
   create_table "users", force: true do |t|

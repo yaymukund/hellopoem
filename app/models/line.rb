@@ -4,14 +4,14 @@
 #
 #  id        :integer          not null, primary key
 #  text      :text             not null
-#  order     :integer          not null
+#  rank      :integer
 #  stanza_id :integer
 #
+
 class Line < ActiveRecord::Base
-  belongs_to :stanza, inverse_of: :line
+  belongs_to :stanza, inverse_of: :lines
   has_one :poem, through: :stanza
   has_one :author, through: :poem
-
-  default_scope order('order ASC')
-  validates :text, :order, presence: true
+  validates :text, presence: true
+  default_scope { order('rank ASC') }
 end

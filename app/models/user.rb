@@ -6,6 +6,7 @@
 #  login           :text             not null
 #  password_digest :text
 #
+
 class User < ActiveRecord::Base
   has_secure_password
 
