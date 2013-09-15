@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.0.0'
 gem 'haml'
-gem 'kaminari'
 
 gem 'ember-rails', github: 'emberjs/ember-rails'
 gem 'ember-source'
