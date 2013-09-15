@@ -1,1 +1,7 @@
-Hello world!
+<h2>{{title}}</h2>
+
+{{#each stanzas}}
+  <div class="stanza">
+    {{#each lines}}<p>{{text}}</p>{{/each}}
+  </div>
+{{/each}}

@@ -1,3 +1,5 @@
+//= require ./adapter
+//= require ./serializer
 //= require ./store
 //= require_tree ./mixins
 //= require_tree ./models
