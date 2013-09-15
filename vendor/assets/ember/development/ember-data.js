@@ -1,5 +1,5 @@
 // Fetched from: http://builds.emberjs.com/ember-data-latest.js
-// Fetched on: 2013-09-13T19:09:52Z
+// Fetched on: 2013-09-15T15:44:19Z
 // ==========================================================================
 // Project:   Ember Data
 // Copyright: ©2011-2012 Tilde Inc. and contributors.
@@ -9,7 +9,7 @@
 
 
 
-// Last commit: 8a75004 (2013-09-12 22:06:57 -0700)
+// Last commit: d52305a (2013-09-14 21:31:45 -0700)
 
 
 (function() {
@@ -714,6 +714,14 @@ DS.RecordArray = Ember.ArrayProxy.extend(Ember.Evented, {
 
   removeRecord: function(record) {
     get(this, 'content').removeObject(record);
+  },
+
+  save: function() {
+    var promise = Ember.RSVP.all(this.invoke("save")).then(function(array) {
+      return Ember.A(array);
+    });
+
+    return DS.PromiseArray.create({ promise: promise });
   }
 });
 
@@ -1478,7 +1486,7 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
   findById: function(type, id) {
     type = this.modelFor(type);
 
-    var record = this.getById(type, id);
+    var record = this.recordForId(type, id);
 
     var promise = this.fetchRecord(record) || resolve(record);
     return promiseObject(promise);
@@ -1538,7 +1546,7 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
     Get a record by a given type and ID without triggering a fetch.
 
     This method will synchronously return the record if it's available.
-    Otherwise, it will return undefined.
+    Otherwise, it will return null.
 
     ```js
     var post = store.getById('post', 1);
@@ -1554,7 +1562,7 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
     if (this.hasRecordForId(type, id)) {
       return this.recordForId(type, id);
     } else {
-      return this.buildRecord(type, id);
+      return null;
     }
   },
 
@@ -7362,7 +7370,7 @@ Inflector.prototype = {
     @param {String} word
   */
   pluralize: function(word) {
-    return this.inflect(word, this.rules.plurals);
+    return this.inflect(word, this.rules.plurals, this.rules.irregular);
   },
 
   /**
@@ -7370,15 +7378,18 @@ Inflector.prototype = {
     @param {String} word
   */
   singularize: function(word) {
-    return this.inflect(word, this.rules.singular);
+    return this.inflect(word, this.rules.singular,  this.rules.irregularInverse);
   },
 
   /**
+    @protected
+
     @method inflect
     @param {String} word
     @param {Object} typeRules
+    @param {Object} irregular
   */
-  inflect: function(word, typeRules) {
+  inflect: function(word, typeRules, irregular) {
     var inflection, substitution, result, lowercase, isBlank,
     isUncountable, isIrregular, isIrregularInverse, rule;
 
@@ -7396,16 +7407,10 @@ Inflector.prototype = {
       return word;
     }
 
-    isIrregular = this.rules.irregular[lowercase];
+    isIrregular = irregular && irregular[lowercase];
 
     if (isIrregular) {
       return isIrregular;
-    }
-
-    isIrregularInverse = this.rules.irregularInverse[lowercase];
-
-    if (isIrregularInverse) {
-      return isIrregularInverse;
     }
 
     for (var i = typeRules.length, min = 0; i > min; i--) {

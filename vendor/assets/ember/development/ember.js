@@ -1,5 +1,5 @@
 // Fetched from: http://builds.emberjs.com/ember-latest.js
-// Fetched on: 2013-09-13T19:09:47Z
+// Fetched on: 2013-09-15T15:44:16Z
 // ==========================================================================
 // Project:   Ember - JavaScript Application Framework
 // Copyright: ©2011-2013 Tilde Inc. and contributors
@@ -10,8 +10,8 @@
 // ==========================================================================
 
 
-// Version: v1.0.0-103-gac13467
-// Last commit: ac13467 (2013-09-13 11:47:08 -0700)
+// Version: v1.0.0-109-gf2299dd
+// Last commit: f2299dd (2013-09-15 06:46:20 -0700)
 
 
 (function() {
@@ -192,8 +192,8 @@ if (!Ember.testing) {
 // ==========================================================================
 
 
-// Version: v1.0.0-103-gac13467
-// Last commit: ac13467 (2013-09-13 11:47:08 -0700)
+// Version: v1.0.0-109-gf2299dd
+// Last commit: f2299dd (2013-09-15 06:46:20 -0700)
 
 
 (function() {
@@ -8717,7 +8717,7 @@ define("container",
         @method makeToString
 
         @param {any} factory
-        @param {string} fullNae
+        @param {string} fullName
         @return {function} toString function
       */
       makeToString: function(factory, fullName) {
@@ -12014,16 +12014,15 @@ Ember.computed.map = function(dependentKey, callback) {
 
   ```javascript
   App.Person = Ember.Object.extend({
-    childAges: Ember.computed.mapBy('children', 'age'),
-    minChildAge: Ember.computed.min('childAges')
+    childAges: Ember.computed.mapBy('children', 'age')
   });
 
   var lordByron = App.Person.create({children: []});
-  lordByron.get('childAge'); // []
+  lordByron.get('childAges'); // []
   lordByron.get('children').pushObject({name: 'Augusta Ada Byron', age: 7});
-  lordByron.get('childAge'); // [7]
+  lordByron.get('childAges'); // [7]
   lordByron.get('children').pushObjects([{name: 'Allegra Byron', age: 5}, {name: 'Elizabeth Medora Leigh', age: 8}]);
-  lordByron.get('childAge'); // [7, 5, 8]
+  lordByron.get('childAges'); // [7, 5, 8]
   ```
 
   @method computed.mapBy
@@ -35369,13 +35368,15 @@ var Application = Ember.Application = Ember.Namespace.extend(Ember.DeferredMixin
     ```javascript
     App = Ember.Application.create();
 
-    App.Person = Ember.Object.extend({});
-    App.Orange = Ember.Object.extend({});
-    App.Email  = Ember.Object.extend({});
+    App.Person  = Ember.Object.extend({});
+    App.Orange  = Ember.Object.extend({});
+    App.Email   = Ember.Object.extend({});
+    App.Session = Ember.Object.create({});
 
     App.register('model:user', App.Person, {singleton: false });
     App.register('fruit:favorite', App.Orange);
     App.register('communication:main', App.Email, {singleton: false});
+    App.register('session', App.Session, {instantiate: false});
     ```
 
     @method register
