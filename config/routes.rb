@@ -1,5 +1,8 @@
 Hellopoem::Application.routes.draw do
   root to: 'home#index'
-  resources :poems, only: :index
-  resources :users, only: :show
+
+  defaults format: :json do
+    resources :poems, only: :index
+    resources :users, only: :show
+  end
 end

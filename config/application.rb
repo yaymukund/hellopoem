@@ -20,5 +20,15 @@ module Hellopoem
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.active_support.escape_html_entities_in_json = true
+
+    # From http://www.fabricationgem.org/#!rails-3:
+    #
+    # You can configure Rails 3 to produce fabricators when you generate
+    # models by specifying it in your config/application.rb. Use this if you
+    # are using rspec:
+    config.generators do |g|
+      g.test_framework :rspec, fixture: true
+      g.fixture_replacement :fabrication
+    end
   end
 end

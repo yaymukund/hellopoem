@@ -2,9 +2,15 @@ var attr = DS.attr;
 
 Hellopoem.Poem = DS.Model.extend({
   title: attr('string'),
-
   user: DS.belongsTo('user'),
-  stanzas: DS.hasMany('stanza')
+  stanzas: DS.hasMany('stanza'),
+  lastStanza: Ember.computed.maxItemBy('stanzas', 'rank'),
+
+  // Methods
+
+  pushLine: function(newLine) {
+    return this.get('lastStanza').pushLine(newLine);
+  }
 });
 
 Hellopoem.Poem.reopenClass({

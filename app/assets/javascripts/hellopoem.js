@@ -1,3 +1,4 @@
+//= require_tree ./extensions
 //= require ./adapter
 //= require ./serializer
 //= require ./store

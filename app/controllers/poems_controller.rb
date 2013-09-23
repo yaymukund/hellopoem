@@ -6,6 +6,6 @@ class PoemsController < ApplicationController
       @poems = @poems.random_order
     end
 
-    render json: @poems
+    respond_with(@poems)
   end
 end
