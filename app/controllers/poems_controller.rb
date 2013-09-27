@@ -12,7 +12,7 @@ class PoemsController < ApplicationController
   end
 
   def show
-    unless current_user.can_read?(poem)
+    unless current_user.can_read?(@poem)
       not_authorized
       return
     end
