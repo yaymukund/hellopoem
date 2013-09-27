@@ -18,4 +18,12 @@ class User < ActiveRecord::Base
                     uniqueness: true
 
   validates :password_digest, presence: true
+
+  def can_create?(resource)
+    resource.creatable_by?(self)
+  end
+
+  def can_read?(resource)
+    resource.readable_by?(self)
+  end
 end

@@ -2,21 +2,18 @@ class LinesController < ApplicationController
   def create
     @line = Line.new(line_params)
 
-    unless can_create?(line)
+    unless current_user.can_create?(@line)
       not_authorized
       return
     end
 
-    if @line.save
-      respond_with(@line)
-    else
-      respond_with(@line.errors)
-    end
+    @line.save
+    respond_with(@line, location: poem_url(@line.poem))
   end
 
   private
 
   def line_params
-    params.require(:line).permit(:text, :rank, :stanza)
+    params.require(:line).permit(:text, :rank, :stanza_id)
   end
 end

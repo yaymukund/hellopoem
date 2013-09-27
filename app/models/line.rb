@@ -14,4 +14,8 @@ class Line < ActiveRecord::Base
   has_one :user, through: :poem
   validates :text, presence: true
   default_scope { order('rank ASC') }
+
+  def creatable_by?(user)
+    user.poems.include?(poem)
+  end
 end

@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   def page_limit
     if params[:limit].present?
-      [params[:limit], MAX_RECORDS_IN_ONE_REQUEST].min
+      [params[:limit].to_i, MAX_RECORDS_IN_ONE_REQUEST].min
     else
       MAX_RECORDS_IN_ONE_REQUEST
     end
@@ -31,5 +31,16 @@ class ApplicationController < ActionController::Base
 
   def page_offset
     params[:offset] || 0
+  end
+
+  # Sessions!
+  def current_user
+    if session[:current_user_id].present?
+      @current_user ||= User.find(session[:current_user_id])
+    end
+  end
+
+  def logged_in?
+    current_user.present?
   end
 end

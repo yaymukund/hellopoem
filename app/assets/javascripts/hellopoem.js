@@ -1,7 +1,7 @@
 //= require_tree ./extensions
 //= require ./adapter
-//= require ./serializer
 //= require ./store
+//= require_tree ./initializers
 //= require_tree ./mixins
 //= require_tree ./models
 //= require_tree ./controllers
